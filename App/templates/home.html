@@ -1,0 +1,179 @@
+{% extends 'base/navbar.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'home.css' %}">
+{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<!-- AUTHENTICATED DASHBOARD -->
+<div class="dashboard-header">
+    <h1 class="welcome-text">Welcome back, {{ user.username|title }}!</h1>
+    <p class="date-text">Ready to ace your next interview?</p>
+</div>
+
+<!-- Quick Stats -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon icon-purple">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
+            </svg>
+        </div>
+        <div class="stat-info">
+            <h3>Completed</h3>
+            <div class="stat-value">{{ total_interviews|default:0 }}</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon icon-blue">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20v-6M6 20V10M18 20V4" />
+            </svg>
+        </div>
+        <div class="stat-info">
+            <h3>Avg. Score</h3>
+            <div class="stat-value">{% if avg_score %}{{ avg_score }}{% else %}--{% endif %}</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon icon-green">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+            </svg>
+        </div>
+        <div class="stat-info">
+            <h3>Streak</h3>
+            <div class="stat-value">{{ streak|default:0 }} Day{{ streak|pluralize }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-content">
+    <!-- Main Action Area -->
+    <div class="action-card">
+        <h2 class="action-title">Start a Mock Interview</h2>
+        <p class="action-desc">Practice with our AI interviewer. Choose your topic, difficulty, and get instant feedback
+            on your answers.</p>
+        <a href="{% url 'interview' %}" class="btn-action">
+            Start Session
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+        </a>
+    </div>
+
+    <!-- Recent Activity (Sidebar) -->
+    <div class="recent-section">
+        <div class="section-header">
+            <h3 class="section-title">Recent Activity</h3>
+        </div>
+        <div class="activity-list">
+            {% if recent_interviews %}
+                {% for interview in recent_interviews %}
+                <div class="activity-item">
+                    <div class="activity-icon" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="activity-details">
+                        <div class="activity-title">{{ interview.role }}{% if interview.technology %} - {{ interview.technology }}{% endif %}</div>
+                        <div class="activity-time">
+                            Score: <strong>{{ interview.score }}/100</strong> • {{ interview.created_at|timesince }} ago
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                            <line x1="16" y1="13" x2="8" y2="13" />
+                            <line x1="16" y1="17" x2="8" y2="17" />
+                            <polyline points="10 9 9 9 8 9" />
+                        </svg>
+                    </div>
+                    <div class="activity-details">
+                        <div class="activity-title">No interviews yet</div>
+                        <div class="activity-time">Start your first interview to see activity here</div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% else %}
+<!-- UNAUTHENTICATED LANDING PAGE -->
+<div class="hero-section">
+    <h1 class="hero-title">Master Your Technical Interviews with AI</h1>
+    <p class="hero-subtitle">Interactive mock interviews tailored to your job role. Get real-time feedback, improve your
+        speaking, and land your dream job.</p>
+
+    <div class="hero-actions">
+        <a href="{% url 'signup' %}" class="btn btn-primary btn-hero">Get Started for Free</a>
+        <a href="{% url 'login' %}" class="btn btn-ghost btn-hero">Log In</a>
+    </div>
+</div>
+
+<div class="features-grid">
+    <!-- Feature 1 -->
+    <div class="feature-card">
+        <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+        </div>
+        <h3 class="feature-title">AI-Powered Interviews</h3>
+        <p class="feature-desc">Experience realistic voice-based interviews with an AI that adapts to your responses.
+        </p>
+    </div>
+
+    <!-- Feature 2 -->
+    <div class="feature-card">
+        <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+        </div>
+        <h3 class="feature-title">Real-Time Feedback</h3>
+        <p class="feature-desc">Receive instant analysis on your clarity, keyword usage, and answer confidence.</p>
+    </div>
+
+    <!-- Feature 3 -->
+    <div class="feature-card">
+        <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+        </div>
+        <div class="feature-title">Curated Question Banks</div>
+        <p class="feature-desc">Access thousands of questions from top tech companies across various domains.</p>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

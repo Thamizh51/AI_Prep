@@ -1,0 +1,113 @@
+{% extends 'base/navbar.html' %}
+{% load static %}
+
+{% block title %}Interview Review{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'interview_review.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="review-container">
+    <div class="review-header">
+        <h1 class="review-title">Interview Review</h1>
+        <p class="review-subtitle">Your performance analysis and feedback</p>
+    </div>
+
+    <!-- Score Card -->
+    <div class="score-card">
+        <div class="score-circle">
+            <div class="score-value">{{ interview.score }}</div>
+            <div class="score-label">Out of 100</div>
+        </div>
+        <div class="score-details">
+            <h2 class="role-title">{{ interview.role }}</h2>
+            {% if interview.technology %}
+            <p class="tech-badge">{{ interview.technology }}</p>
+            {% endif %}
+            <p class="review-date">Completed on {{ interview.created_at|date:"F d, Y" }} at {{ interview.created_at|time:"g:i A" }}</p>
+        </div>
+    </div>
+
+    <!-- Review Content -->
+    <div class="review-content">
+        <!-- AI Review -->
+        <div class="review-section">
+            <h3 class="section-title">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+                Overall Review
+            </h3>
+            <div class="review-text">
+                {{ interview.ai_review|linebreaks }}
+            </div>
+        </div>
+
+        <!-- Strengths -->
+        <div class="review-section strengths-section">
+            <h3 class="section-title">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+                Strengths
+            </h3>
+            <ul class="strengths-list">
+                {% for strength in strengths_list %}
+                <li class="strength-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    {{ strength }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Areas for Improvement -->
+        <div class="review-section improvements-section">
+            <h3 class="section-title">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                Areas for Improvement
+            </h3>
+            <ul class="improvements-list">
+                {% for improvement in improvements_list %}
+                <li class="improvement-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    {{ improvement }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="review-actions">
+        <a href="{% url 'home' %}" class="btn-review btn-primary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            Back to Home
+        </a>
+        <a href="{% url 'interview' %}" class="btn-review btn-secondary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+            </svg>
+            Start New Interview
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,224 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Prep - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'navbar.css' %}?v=2">
+    {% block css %}{% endblock %}
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <!-- Logo -->
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <!-- SVG Sparkle Icon for AI -->
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+                    </svg>
+                </div>
+                AI <span>Prep</span>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}" class="nav-link active">Home</a></li>
+                <li><a href="#features" class="nav-link">Features</a></li>
+                <li><a href="{% url 'mock_interviews' %}" class="nav-link">Mock Interviews</a></li>
+                <li><a href="#pricing" class="nav-link">Pricing</a></li>
+                <li><a href="{% url 'about' %}" class="nav-link">About</a></li>
+            </ul>
+
+            <!-- Desktop Buttons -->
+            <div class="nav-buttons">
+                {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}" class="btn btn-ghost logout-link">Log Out</a>
+                <a href="{% url 'interview' %}" class="btn btn-primary">
+                    Start Interview
+                </a>
+                {% else %}
+                <a href="{% url 'login' %}" class="btn btn-ghost">Log In
+                    <svg style="margin-left: 6px;" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+                <a href="{% url 'signup' %}" class="btn btn-primary">Sign Up
+                    <svg style="margin-left: 6px;" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- Mobile Hamburger Button -->
+            <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu (Slide-out) -->
+    <div class="overlay" id="overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#home" class="mobile-link">Home</a>
+        <a href="#features" class="mobile-link">Features</a>
+        <a href="#about" class="mobile-link">About</a>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="btn btn-ghost btn-mobile logout-link">Log Out</a>
+            {% else %}
+            <a href="#login" class="btn btn-ghost btn-mobile">Log In</a>
+            <a href="#signup" class="btn btn-ghost btn-mobile">Sign Up</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <main class="page-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+
+    <!-- Logout Confirmation Modal -->
+    <div class="modal-overlay" id="logout-modal">
+        <div class="modal-content">
+            <h3 class="modal-title">Confirm Logout</h3>
+            <p class="modal-message">Are you sure you want to log out of your account?</p>
+            <div class="modal-actions">
+                <button class="btn-modal btn-cancel" id="cancel-logout">Cancel</button>
+                <button class="btn-modal btn-confirm" id="confirm-logout">Log Out</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navbar = document.getElementById('navbar');
+            const mobileToggle = document.getElementById('mobile-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const overlay = document.getElementById('overlay');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+
+            // 1. Scroll Effect
+            // Adds a shadow and solidifies background when scrolling down
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 20) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // 2. Mobile Menu Toggle
+            function toggleMenu() {
+                const isActive = mobileMenu.classList.contains('active');
+
+                if (isActive) {
+                    // Close Menu
+                    mobileMenu.classList.remove('active');
+                    overlay.classList.remove('active');
+                    mobileToggle.classList.remove('active');
+                    document.body.style.overflow = ''; // Re-enable scrolling
+                } else {
+                    // Open Menu
+                    mobileMenu.classList.add('active');
+                    overlay.classList.add('active');
+                    mobileToggle.classList.add('active');
+                    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                }
+            }
+
+            mobileToggle.addEventListener('click', toggleMenu);
+            overlay.addEventListener('click', toggleMenu);
+
+            // 3. Close menu when a link is clicked
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (mobileMenu.classList.contains('active')) {
+                        toggleMenu();
+                    }
+                });
+            });
+
+            // 4. Logout Confirmation Modal
+            const logoutModal = document.getElementById('logout-modal');
+            const cancelLogoutBtn = document.getElementById('cancel-logout');
+            const confirmLogoutBtn = document.getElementById('confirm-logout');
+            let logoutTargetUrl = '';
+
+            function openLogoutModal(event) {
+                event.preventDefault();
+                logoutTargetUrl = event.currentTarget.href;
+                logoutModal.classList.add('active');
+            }
+
+            function closeLogoutModal() {
+                logoutModal.classList.remove('active');
+                logoutTargetUrl = '';
+            }
+
+            cancelLogoutBtn.addEventListener('click', closeLogoutModal);
+
+            confirmLogoutBtn.addEventListener('click', () => {
+                if (logoutTargetUrl) {
+                    window.location.href = logoutTargetUrl;
+                }
+            });
+
+            // Close modal if clicking outside
+            logoutModal.addEventListener('click', (e) => {
+                if (e.target === logoutModal) {
+                    closeLogoutModal();
+                }
+            });
+
+
+
+            const logoutLinks = document.querySelectorAll('.logout-link');
+            logoutLinks.forEach(link => {
+                link.addEventListener('click', openLogoutModal);
+            });
+        });
+    </script>
+
+
+    <style>
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-10px);
+            }
+
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+    </style>
+</body>
+
+</html>

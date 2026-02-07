@@ -1,0 +1,184 @@
+/* --- About Page Styles --- */
+
+/* Hero Section */
+.about-hero {
+    text-align: center;
+    padding: 80px 20px;
+    background: radial-gradient(circle at top center, rgba(99, 102, 241, 0.1), transparent 70%);
+}
+
+.about-title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.about-title span {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.about-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-gray);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Section Common */
+.section {
+    padding: 80px 0;
+}
+
+.section-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 60px;
+    color: var(--text-dark);
+}
+
+/* How It Works (Timeline/Steps) */
+.steps-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Connecting Line */
+.steps-container::before {
+    content: '';
+    position: absolute;
+    top: 40px;
+    left: 50px;
+    right: 50px;
+    height: 2px;
+    background: #e2e8f0;
+    z-index: 0;
+}
+
+.step-card {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    background: transparent;
+}
+
+.step-number {
+    width: 80px;
+    height: 80px;
+    background: white;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0 auto 24px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.step-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: var(--text-dark);
+}
+
+.step-card p {
+    font-size: 0.95rem;
+    color: var(--text-gray);
+    line-height: 1.5;
+}
+
+/* Why Choose Us (Grid) */
+.features-grid-about {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.feature-box {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid #f1f5f9;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+}
+
+.feature-box:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-color);
+}
+
+.feature-box h3 {
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.feature-box p {
+    color: var(--text-gray);
+    line-height: 1.6;
+}
+
+/* Mission Section */
+.mission-section {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    color: white;
+    padding: 80px 40px;
+    border-radius: 30px;
+    text-align: center;
+    margin: 40px 0;
+}
+
+.mission-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.mission-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+
+.mission-text {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    line-height: 1.8;
+    margin-bottom: 40px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .steps-container {
+        flex-direction: column;
+        gap: 50px;
+    }
+    
+    .steps-container::before {
+        width: 2px;
+        height: 100%;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+    }
+
+    .about-title {
+        font-size: 2.2rem;
+    }
+}

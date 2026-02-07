@@ -1,0 +1,155 @@
+{% extends 'base/navbar.html' %}
+{% load static %}
+
+{% block title %}Start Interview{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'start_interview.css' %}?v=2">
+{% endblock %}
+
+{% block content %}
+<div class="setup-container">
+    <div class="setup-header">
+        <h1 class="setup-title">Configure Your <span>Session</span></h1>
+        <p class="setup-subtitle">Customize the parameters for your mock interview. The AI will adapt to your settings.
+        </p>
+    </div>
+
+    <div class="config-card">
+        <form>
+            {% if role %}
+            <div class="role-badge">Selected Role: {{ role }}</div>
+            <input type="hidden" name="role" value="{{ role }}">
+            {% else %}
+            <div class="setting-group" style="margin-bottom: 30px;">
+                <label class="setting-label">Select Interview Role</label>
+                <select class="setting-select" name="role">
+                    <optgroup label="Software Development">
+                        <option value="Frontend Engineering">Frontend Engineering</option>
+                        <option value="Backend Engineering">Backend Engineering</option>
+                        <option value="Full Stack Development">Full Stack Development</option>
+                        <option value="Mobile App Development (iOS/Android)">Mobile App Development</option>
+                        <option value="Game Development">Game Development</option>
+                    </optgroup>
+                    <optgroup label="Data & AI">
+                        <option value="Data Science">Data Science</option>
+                        <option value="Machine Learning Engineering">Machine Learning Engineering</option>
+                        <option value="Data Engineering">Data Engineering</option>
+                        <option value="Artificial Intelligence">Artificial Intelligence</option>
+                    </optgroup>
+                    <optgroup label="Infrastructure & Security">
+                        <option value="DevOps & Cloud">DevOps & Cloud</option>
+                        <option value="Cybersecurity Analyst">Cybersecurity Analyst</option>
+                        <option value="Network Engineering">Network Engineering</option>
+                        <option value="Database Administration">Database Administration</option>
+                    </optgroup>
+                    <optgroup label="Core Technical">
+                        <option value="Technical Coding">Technical Coding (DSA)</option>
+                        <option value="System Design">System Design</option>
+                    </optgroup>
+                    <optgroup label="Management & Other">
+                        <option value="Product Management (Tech)">Product Management (Tech)</option>
+                        <option value="QA / Automation Testing">QA / Automation Testing</option>
+                        <option value="Behavioral">Behavioral / HR</option>
+                    </optgroup>
+                </select>
+            </div>
+            {% endif %}
+
+            <!-- Tech Stack Input -->
+            <div class="setting-group" style="margin-bottom: 30px;">
+                <label class="setting-label">Tech Stack / Specific Technologies (Optional)</label>
+                <input type="text" class="setting-input" name="technology"
+                    placeholder="e.g. React, Python, Java, AWS, Spring Boot...">
+            </div>
+
+            <!-- AI Info -->
+            <div class="api-config-section" style="margin-bottom: 30px; padding: 20px; background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1)); border-radius: 12px; border: 1px solid var(--nav-border);">
+                <h3 style="margin-bottom: 10px; color: var(--text-dark); font-size: 1.1rem;">🤖 AI Powered Interview</h3>
+                <p style="color: var(--text-gray); font-size: 0.9rem; margin: 0;">
+                    Using powerful AI model: <strong>Mixtral 8x7B</strong> via Groq API. No API key required - ready to start!
+                </p>
+            </div>
+
+            <div class="settings-grid">
+                <!-- Difficulty -->
+                <div class="setting-group">
+                    <label class="setting-label">Difficulty Level</label>
+                    <select class="setting-select">
+                        <option value="junior">Junior / Entry Level</option>
+                        <option value="mid" selected>Mid-Level</option>
+                        <option value="senior">Senior / Lead</option>
+                    </select>
+                </div>
+
+                <!-- Focus Area -->
+                <div class="setting-group">
+                    <label class="setting-label">Focus Area</label>
+                    <select class="setting-select">
+                        <option value="balanced">Balanced (Tech + Behavioral)</option>
+                        <option value="technical">Technical Only</option>
+                        <option value="behavioral">Behavioral Only</option>
+                    </select>
+                </div>
+
+                <!-- Duration -->
+                <div class="setting-group">
+                    <label class="setting-label">Duration</label>
+                    <select class="setting-select">
+                        <option value="15">15 Minutes (Quick)</option>
+                        <option value="30" selected>30 Minutes (Standard)</option>
+                        <option value="45">45 Minutes (Deep Dive)</option>
+                    </select>
+                </div>
+
+                <!-- Interviwer Persona -->
+                <div class="setting-group">
+                    <label class="setting-label">Interviewer Persona</label>
+                    <select class="setting-select">
+                        <option value="friendly">Friendly & Encouraging</option>
+                        <option value="neutral" selected>Professional & Neutral</option>
+                        <option value="strict">Strict & Challenging</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <button type="button" class="start-btn" id="start-interview-btn">Start Interview Session</button>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const startBtn = document.getElementById('start-interview-btn');
+    const form = document.querySelector('form');
+    
+    startBtn.addEventListener('click', function() {
+        const formData = new FormData(form);
+        const roleInput = document.querySelector('input[name="role"]');
+        const roleSelect = document.querySelector('select[name="role"]');
+        const role = roleInput ? roleInput.value : (roleSelect ? roleSelect.value : '');
+        const technology = formData.get('technology') || document.querySelector('input[name="technology"]')?.value || '';
+        const difficulty = form.querySelector('.settings-grid select:nth-of-type(1)')?.value || 'mid';
+        const focus = form.querySelector('.settings-grid select:nth-of-type(2)')?.value || 'balanced';
+        const duration = form.querySelector('.settings-grid select:nth-of-type(3)')?.value || '30';
+        const persona = form.querySelector('.settings-grid select:nth-of-type(4)')?.value || 'neutral';
+        
+        // Store configuration in sessionStorage (no API key needed - handled by backend)
+        const config = {
+            role: role,
+            technology: technology,
+            difficulty: difficulty,
+            focus: focus,
+            duration: duration,
+            persona: persona
+        };
+        
+        sessionStorage.setItem('interviewConfig', JSON.stringify(config));
+        
+        // Redirect to chat interface
+        window.location.href = "{% url 'interview_chat' %}";
+    });
+});
+</script>
+{% endblock %}

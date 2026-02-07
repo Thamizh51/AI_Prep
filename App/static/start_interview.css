@@ -1,0 +1,125 @@
+/* --- Start Interview Page Styles --- */
+
+.setup-container {
+    padding: 120px 20px 60px; /* Top padding for fixed navbar */
+    max-width: 900px;
+    margin: 0 auto;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.setup-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.setup-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+    color: var(--text-dark);
+}
+
+.setup-title span {
+    color: var(--primary-color);
+}
+
+.setup-subtitle {
+    color: var(--text-gray);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Config Card */
+.config-card {
+    background: white;
+    width: 100%;
+    border-radius: 24px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--nav-border);
+    overflow: hidden;
+    padding: 40px;
+}
+
+.role-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+    color: var(--primary-color);
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+/* Form Settings */
+.settings-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+    .settings-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.setting-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.setting-label {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 1rem;
+}
+
+.setting-select, .setting-input {
+    padding: 12px 16px;
+    border: 1px solid var(--nav-border);
+    border-radius: 12px;
+    font-size: 1rem;
+    color: var(--text-dark);
+    background-color: #f8fafc;
+    cursor: pointer;
+    transition: all 0.2s;
+    outline: none;
+}
+
+.setting-input {
+    cursor: text;
+}
+
+.setting-select:focus, .setting-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    background-color: white;
+}
+
+/* Action Area */
+.start-btn {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.start-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+}

@@ -1,0 +1,313 @@
+        /* --- CSS Variables & Reset (Matching the Navbar Theme) --- */
+        :root {
+            --primary-color: #6366f1; /* Indigo */
+            --primary-hover: #4f46e5;
+            --secondary-color: #8b5cf6; /* Violet */
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
+            --bg-body: #f8fafc;
+            --input-bg: #f1f5f9;
+            --border-color: #e2e8f0;
+            --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-body);
+            /* Abstract AI Mesh Background */
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(253,16%,7%,0) 0, hsla(253,16%,7%,0) 50%), 
+                radial-gradient(at 50% 0%, hsla(225,39%,30%,0) 0, hsla(225,39%,30%,0) 50%), 
+                radial-gradient(at 100% 0%, hsla(339,49%,30%,0) 0, hsla(339,49%,30%,0) 50%);
+            min-height: 100vh;
+            color: var(--text-dark);
+            /* Removed flex to allow page-content to control layout */
+        }
+        
+        .page-content {
+             /* Inherits margin-top from navbar.css if present, ensuring spacing */
+             min-height: 100vh;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             padding-bottom: 50px; /* Extra bottom padding */
+             /* The padding-top is expected from navbar.css, but we can ensure it here too if needed, 
+                but navbar.css is loaded first? No, navbar.css is loaded, then this overrides if needed.
+                To be safe, we rely on navbar.css for padding-top or add it here.
+                Since this file is for login/signup which needs centering:
+              */
+        }
+
+        /* --- Login Card Container --- */
+        .login-card {
+            background: white;
+            width: 100%;
+            max-width: 1000px;
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            display: flex;
+            flex-direction: row;
+            min-height: 600px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* --- Left Side (Branding / Visual) --- */
+        .brand-section {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative pattern on brand side */
+        .brand-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            animation: rotate 20s linear infinite;
+        }
+
+        .brand-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .brand-title {
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .brand-text {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* --- Right Side (Form) --- */
+        .form-section {
+            flex: 1.2;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: white;
+        }
+
+        .form-header {
+            margin-bottom: 32px;
+        }
+
+        .form-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .form-header p {
+            color: var(--text-gray);
+        }
+
+        .form-header a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* --- Social Buttons --- */
+        .social-login {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .btn-social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            background: white;
+            color: var(--text-dark);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .btn-social:hover {
+            background-color: var(--bg-body);
+            border-color: #cbd5e1;
+        }
+
+        /* --- Divider --- */
+        .divider {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            color: var(--text-gray);
+            font-size: 0.85rem;
+        }
+
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background-color: var(--border-color);
+        }
+
+        .divider span {
+            padding: 0 10px;
+        }
+
+        /* --- Inputs --- */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            padding-left: 40px; /* Space for icon */
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            background-color: var(--input-bg);
+            font-size: 1rem;
+            font-family: inherit;
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .input-icon, .input-icon-left {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-gray);
+            pointer-events: none;
+        }
+        
+        .input-icon-right {
+           position: absolute;
+           right: 14px;
+           top: 50%;
+           transform: translateY(-50%);
+           color: var(--text-gray);
+           cursor: pointer;
+        }
+
+        .forgot-pass {
+            display: block;
+            text-align: right;
+            margin-top: 6px;
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot-pass:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Submit Button --- */
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .login-card {
+                flex-direction: column;
+                min-height: auto;
+            }
+            .brand-section {
+                padding: 30px;
+                min-height: 200px;
+            }
+            .brand-title {
+                font-size: 1.8rem;
+            }
+            .form-section {
+                padding: 30px;
+            }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .field-error {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            font-weight: 500;
+        }

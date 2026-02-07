@@ -1,0 +1,401 @@
+{% extends 'base/navbar.html' %}
+{% load static %}
+
+{% block title %}Interview Chat{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'interview_chat.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="chat-container">
+    <div class="chat-header">
+        <div class="header-info">
+            <h2 class="chat-title">Mock Interview Session</h2>
+            <div class="interview-meta">
+                <span class="meta-badge" id="role-badge"></span>
+                <span class="meta-badge" id="tech-badge"></span>
+            </div>
+        </div>
+        <button class="end-interview-btn" id="end-interview-btn">End Interview</button>
+    </div>
+
+    <div class="chat-messages" id="chat-messages">
+        <div class="message ai-message">
+            <div class="message-avatar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                    <path d="M2 17l10 5 10-5"></path>
+                    <path d="M2 12l10 5 10-5"></path>
+                </svg>
+            </div>
+            <div class="message-content">
+                <div class="message-text">
+                    <p>Hello! I'm your AI interviewer. I'll be asking you questions based on your selected role and technologies. Let's begin!</p>
+                </div>
+                <div class="message-time"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-input-container">
+        <div class="typing-indicator" id="typing-indicator" style="display: none;">
+            <div class="typing-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <span>AI is typing...</span>
+        </div>
+        <form class="chat-input-form" id="chat-form">
+            <textarea 
+                class="chat-input" 
+                id="chat-input" 
+                placeholder="Type your answer here..."
+                rows="1"
+                required></textarea>
+            <button type="submit" class="send-btn" id="send-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- End Interview Confirmation Modal -->
+<div class="modal-overlay" id="end-interview-modal">
+    <div class="modal-content">
+        <h3 class="modal-title">End Interview Session</h3>
+        <p class="modal-message">Are you sure you want to end this interview session? Your progress will be saved.</p>
+        <div class="modal-actions">
+            <button class="btn-modal btn-cancel" id="cancel-end-interview">Cancel</button>
+            <button class="btn-modal btn-confirm" id="confirm-end-interview">End Interview</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const chatMessages = document.getElementById('chat-messages');
+const chatForm = document.getElementById('chat-form');
+const chatInput = document.getElementById('chat-input');
+const sendBtn = document.getElementById('send-btn');
+const typingIndicator = document.getElementById('typing-indicator');
+const endInterviewBtn = document.getElementById('end-interview-btn');
+
+// Get configuration from sessionStorage
+const config = JSON.parse(sessionStorage.getItem('interviewConfig') || '{}');
+
+if (!config.role) {
+    alert('No configuration found. Redirecting to setup...');
+    window.location.href = "{% url 'interview' %}";
+}
+
+// Display role and tech badges
+if (config.role) {
+    document.getElementById('role-badge').textContent = config.role;
+}
+if (config.technology) {
+    document.getElementById('tech-badge').textContent = config.technology;
+}
+
+// Map difficulty to experience level
+function getExperienceLevel(difficulty) {
+    const levelMap = {
+        'junior': 'Fresher/Entry Level (0-2 years experience)',
+        'mid': 'Mid-Level (2-5 years experience)',
+        'senior': 'Senior/Experienced (5+ years experience)'
+    };
+    return levelMap[difficulty] || levelMap['mid'];
+}
+
+// Conversation history
+let conversationHistory = [
+    {
+        role: "system",
+        content: `You are an experienced technical interviewer conducting a mock interview. 
+
+CANDIDATE INFORMATION (DO NOT ASK ABOUT THESE - THEY ARE ALREADY KNOWN):
+- Experience Level: ${getExperienceLevel(config.difficulty || 'mid')} - This is ALREADY SET. DO NOT ask "What's your experience level?" or "How many years of experience do you have?". Start asking questions directly based on this level.
+- Position: ${config.role || 'software engineering'}
+${config.technology ? '- Technologies: ' + config.technology + ' - Focus questions on these technologies.' : ''}
+- Interview Style: ${config.persona || 'neutral'}
+- Focus: ${config.focus || 'balanced'}
+
+QUESTION DIFFICULTY GUIDELINES (Based on the experience level above):
+- If FRESHER/ENTRY LEVEL (junior): Ask fundamental questions, basic concepts, simple problem-solving, foundational knowledge. Examples: "What is X?", "Explain the difference between Y and Z", "How would you implement a simple...". Keep questions straightforward and educational.
+- If MID-LEVEL: Ask intermediate questions covering practical experience, design patterns, common challenges, real-world scenarios. Examples: "How would you handle X in production?", "Explain when you would use Y pattern", "Describe a time you solved...".
+- If SENIOR/EXPERIENCED: Ask advanced questions about architecture, system design, optimization, leadership, complex problem-solving, best practices. Examples: "Design a scalable system for...", "How would you optimize X for millions of users?", "Explain your approach to...".
+
+CRITICAL RULES:
+1. DO NOT ask about experience level, years of experience, or background - it's already known.
+2. DO NOT start with "Tell me about yourself" or "What's your experience?" - jump straight into technical/role-specific questions.
+3. Start with the FIRST interview question immediately, appropriate for ${getExperienceLevel(config.difficulty || 'mid')} level.
+4. Adjust ALL questions to match the experience level - never ask senior-level questions to freshers or basic questions to experienced candidates.
+5. Be professional, ask follow-up questions based on their answers, and provide constructive feedback when appropriate.`
+    }
+];
+
+// Auto-resize textarea
+chatInput.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = (this.scrollHeight) + 'px';
+});
+
+// Send message
+chatForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const userMessage = chatInput.value.trim();
+    if (!userMessage) return;
+    
+    // Add user message to UI
+    addMessage('user', userMessage);
+    chatInput.value = '';
+    chatInput.style.height = 'auto';
+    
+    // Add to conversation history
+    conversationHistory.push({
+        role: "user",
+        content: userMessage
+    });
+    
+    // Show typing indicator
+    showTypingIndicator();
+    sendBtn.disabled = true;
+    
+    try {
+        // Send to backend
+        const response = await fetch("{% url 'interview_chat_api' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                messages: conversationHistory
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.error) {
+            throw new Error(data.error);
+        }
+        
+        // Add AI response to conversation history
+        conversationHistory.push({
+            role: "assistant",
+            content: data.response
+        });
+        
+        // Add AI message to UI
+        addMessage('ai', data.response);
+        
+    } catch (error) {
+        console.error('Error:', error);
+        addMessage('ai', 'Sorry, I encountered an error: ' + error.message + '. Please check your API key and try again.');
+    } finally {
+        hideTypingIndicator();
+        sendBtn.disabled = false;
+        chatInput.focus();
+    }
+});
+
+function addMessage(role, text) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${role}-message`;
+    
+    const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    
+    if (role === 'user') {
+        messageDiv.innerHTML = `
+            <div class="message-content">
+                <div class="message-text">
+                    <p>${escapeHtml(text)}</p>
+                </div>
+                <div class="message-time">${time}</div>
+            </div>
+            <div class="message-avatar user-avatar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </div>
+        `;
+    } else {
+        messageDiv.innerHTML = `
+            <div class="message-avatar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                    <path d="M2 17l10 5 10-5"></path>
+                    <path d="M2 12l10 5 10-5"></path>
+                </svg>
+            </div>
+            <div class="message-content">
+                <div class="message-text">
+                    <p>${escapeHtml(text)}</p>
+                </div>
+                <div class="message-time">${time}</div>
+            </div>
+        `;
+    }
+    
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function showTypingIndicator() {
+    typingIndicator.style.display = 'flex';
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function hideTypingIndicator() {
+    typingIndicator.style.display = 'none';
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// End interview modal
+const endInterviewModal = document.getElementById('end-interview-modal');
+const cancelEndInterviewBtn = document.getElementById('cancel-end-interview');
+const confirmEndInterviewBtn = document.getElementById('confirm-end-interview');
+
+function openEndInterviewModal() {
+    endInterviewModal.classList.add('active');
+}
+
+function closeEndInterviewModal() {
+    endInterviewModal.classList.remove('active');
+}
+
+endInterviewBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    openEndInterviewModal();
+});
+
+cancelEndInterviewBtn.addEventListener('click', closeEndInterviewModal);
+
+confirmEndInterviewBtn.addEventListener('click', async function() {
+    // Disable button to prevent multiple clicks
+    confirmEndInterviewBtn.disabled = true;
+    confirmEndInterviewBtn.textContent = 'Generating Review...';
+    
+    try {
+        // Send interview data for review
+        const response = await fetch("{% url 'interview_review_api' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                conversation: conversationHistory,
+                role: config.role || '',
+                technology: config.technology || '',
+                difficulty: config.difficulty || 'mid',
+                focus: config.focus || 'balanced',
+                persona: config.persona || 'neutral'
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Redirect to review page
+            sessionStorage.removeItem('interviewConfig');
+            window.location.href = `/interview-review/${data.interview_id}/`;
+        } else {
+            // Still redirect to home if review generation fails
+            console.error('Review generation error:', data.error);
+            alert('Interview ended. Review generation had some issues, but your interview was saved.');
+            sessionStorage.removeItem('interviewConfig');
+            window.location.href = "{% url 'home' %}";
+        }
+        
+    } catch (error) {
+        console.error('Error ending interview:', error);
+        alert('Error ending interview. Redirecting...');
+        sessionStorage.removeItem('interviewConfig');
+        window.location.href = "{% url 'home' %}";
+    }
+});
+
+// Close modal if clicking outside
+endInterviewModal.addEventListener('click', function(e) {
+    if (e.target === endInterviewModal) {
+        closeEndInterviewModal();
+    }
+});
+
+// Send first AI question on load
+window.addEventListener('load', async function() {
+    showTypingIndicator();
+    sendBtn.disabled = true;
+    
+    try {
+        const response = await fetch("{% url 'interview_chat_api' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                messages: conversationHistory
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.error) {
+            throw new Error(data.error);
+        }
+        
+        conversationHistory.push({
+            role: "assistant",
+            content: data.response
+        });
+        
+        // Replace the initial greeting with the actual first question
+        const firstMessage = chatMessages.querySelector('.ai-message');
+        if (firstMessage) {
+            firstMessage.querySelector('.message-text p').textContent = data.response;
+            const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            firstMessage.querySelector('.message-time').textContent = time;
+        }
+        
+    } catch (error) {
+        console.error('Error:', error);
+        const firstMessage = chatMessages.querySelector('.ai-message');
+        if (firstMessage) {
+            firstMessage.querySelector('.message-text p').textContent = 'Sorry, I encountered an error: ' + error.message + '. Please check your API key and try again.';
+        }
+    } finally {
+        hideTypingIndicator();
+        sendBtn.disabled = false;
+        chatInput.focus();
+    }
+});
+</script>
+{% endblock %}
+

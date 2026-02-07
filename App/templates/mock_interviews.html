@@ -1,0 +1,207 @@
+{% extends 'base/navbar.html' %}
+{% load static %}
+{% block title %}Mock Interviews{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'mock_interviews.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="mock-hero">
+    <h1 class="mock-title">Choose Your <span>Interview Path</span></h1>
+    <p class="mock-subtitle">We offer comprehensive interview simulations covering every aspect of the hiring process.
+        Select a module to start practicing.</p>
+
+    <!-- Optional Filters -->
+    <div class="category-filter">
+        <button class="filter-btn active">All</button>
+        <button class="filter-btn">Coding</button>
+        <button class="filter-btn">System Design</button>
+        <button class="filter-btn">Behavioral</button>
+        <button class="filter-btn">Domain Specific</button>
+    </div>
+</div>
+
+<!-- Main Interview Grid -->
+<div class="category-section">
+    <div class="interview-grid">
+
+        <!-- 1. Data Structures & Algorithms -->
+        <div class="interview-card">
+            <div class="card-image-header header-tech">
+                <div class="card-icon" style="color: #6366f1;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="16 18 22 12 16 6"></polyline>
+                        <polyline points="8 6 2 12 8 18"></polyline>
+                    </svg>
+                </div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">Technical Coding</h3>
+                <p class="card-desc">Master Data Structures and Algorithms. Solve LeetCode-style problems with an AI
+                    interviewer who analyzes your logic and optimization.</p>
+                <div class="card-tags">
+                    <span class="tag">Arrays</span>
+                    <span class="tag">Trees</span>
+                    <span class="tag">DP</span>
+                    <span class="tag">Python/Java/JS</span>
+                </div>
+                {% if user.is_authenticated %}
+                <a href="{% url 'interview' %}?role=Technical Coding" class="btn-start-card">Start Practice</a>
+                {% else %}
+                <a href="{% url 'login' %}?next={% url 'interview' %}" class="btn-start-card">Start Practice</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 2. System Design -->
+        <div class="interview-card">
+            <div class="card-image-header header-system">
+                <div class="card-icon" style="color: #10b981;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                        <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                        <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                        <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                    </svg>
+                </div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">System Design</h3>
+                <p class="card-desc">Learn to architect scalable systems. Discuss load balancing, database sharding, and
+                    API design in a high-level architectural interview.</p>
+                <div class="card-tags">
+                    <span class="tag">Scalability</span>
+                    <span class="tag">Microservices</span>
+                    <span class="tag">Databases</span>
+                </div>
+                {% if user.is_authenticated %}
+                <a href="{% url 'interview' %}?role=System Design" class="btn-start-card">Start Practice</a>
+                {% else %}
+                <a href="{% url 'login' %}?next={% url 'interview' %}" class="btn-start-card">Start Practice</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 3. Behavioral -->
+        <div class="interview-card">
+            <div class="card-image-header header-behavioral">
+                <div class="card-icon" style="color: #f43f5e;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                </div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">Behavioral</h3>
+                <p class="card-desc">Prepare for "Tell me about a time..." questions using the STAR method. Improve your
+                    soft skills and culture fit responses.</p>
+                <div class="card-tags">
+                    <span class="tag">Leadership</span>
+                    <span class="tag">Conflict</span>
+                    <span class="tag">STAR Method</span>
+                </div>
+                {% if user.is_authenticated %}
+                <a href="{% url 'interview' %}?role=Behavioral" class="btn-start-card">Start Practice</a>
+                {% else %}
+                <a href="{% url 'login' %}?next={% url 'interview' %}" class="btn-start-card">Start Practice</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 4. Frontend Engineering -->
+        <div class="interview-card">
+            <div class="card-image-header header-frontend">
+                <div class="card-icon" style="color: #f59e0b;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path
+                            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                        </path>
+                    </svg>
+                </div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">Frontend Engineering</h3>
+                <p class="card-desc">Deep dive into browser rendering, CSS, JavaScript frameworks (React/Vue), and
+                    performance optimization techniques.</p>
+                <div class="card-tags">
+                    <span class="tag">React</span>
+                    <span class="tag">CSS</span>
+                    <span class="tag">Web Vitals</span>
+                </div>
+                {% if user.is_authenticated %}
+                <a href="{% url 'interview' %}?role=Frontend Engineering" class="btn-start-card">Start Practice</a>
+                {% else %}
+                <a href="{% url 'login' %}?next={% url 'interview' %}" class="btn-start-card">Start Practice</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 5. Backend Engineering -->
+        <div class="interview-card">
+            <div class="card-image-header header-tech">
+                <div class="card-icon" style="color: #3b82f6;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                        <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                    </svg>
+                </div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">Backend Engineering</h3>
+                <p class="card-desc">Focus on API development, database management, server logic, and concurrency
+                    problems.</p>
+                <div class="card-tags">
+                    <span class="tag">SQL/NoSQL</span>
+                    <span class="tag">API Design</span>
+                    <span class="tag">Caching</span>
+                </div>
+                {% if user.is_authenticated %}
+                <a href="{% url 'interview' %}?role=Backend Engineering" class="btn-start-card">Start Practice</a>
+                {% else %}
+                <a href="{% url 'login' %}?next={% url 'interview' %}" class="btn-start-card">Start Practice</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 6. DevOps & Cloud -->
+        <div class="interview-card">
+            <div class="card-image-header header-system">
+                <div class="card-icon" style="color: #8b5cf6;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+                    </svg>
+                </div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">DevOps & Cloud</h3>
+                <p class="card-desc">Simulate scenarios involving CI/CD pipelines, containerization (Docker/K8s), and
+                    cloud infrastructure (AWS/Azure).</p>
+                <div class="card-tags">
+                    <span class="tag">Docker</span>
+                    <span class="tag">Kubernetes</span>
+                    <span class="tag">CI/CD</span>
+                </div>
+                {% if user.is_authenticated %}
+                <a href="{% url 'interview' %}?role=DevOps %26 Cloud" class="btn-start-card">Start Practice</a>
+                {% else %}
+                <a href="{% url 'login' %}?next={% url 'interview' %}" class="btn-start-card">Start Practice</a>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
