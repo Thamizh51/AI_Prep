@@ -117,6 +117,9 @@ def start_interview(request):
 def about(request):
     return render(request, 'about.html')
 
+def features(request):
+    return render(request, 'features.html')
+
 def mock_interviews(request):
     return render(request, 'mock_interviews.html')
 

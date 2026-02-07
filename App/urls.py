@@ -12,6 +12,7 @@ urlpatterns = [
     path('api/interview-review/', views.interview_review_api, name='interview_review_api'),
     path('interview-review/<int:interview_id>/', views.interview_review, name='interview_review'),
     path('about/', views.about, name='about'),
+    path('features/', views.features, name='features'),
     path('mock-interviews/', views.mock_interviews, name='mock_interviews'),
     # End of URL patterns
 ]
