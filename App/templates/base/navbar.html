@@ -17,7 +17,7 @@
     <nav class="navbar" id="navbar">
         <div class="container">
             <!-- Logo -->
-            <a href="#" class="logo">
+            <a href="{% url 'home' %}" class="logo">
                 <div class="logo-icon">
                     <!-- SVG Sparkle Icon for AI -->
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -31,7 +31,7 @@
 
             <!-- Desktop Navigation Links -->
             <ul class="nav-links">
-                <li><a href="{% url 'home' %}" class="nav-link active">Home</a></li>
+                <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
                 <li><a href="{% url 'features' %}" class="nav-link">Features</a></li>
                 <li><a href="{% url 'mock_interviews' %}" class="nav-link">Mock Interviews</a></li>
                 <li><a href="{% url 'about' %}" class="nav-link">About</a></li>
@@ -76,15 +76,16 @@
     <div class="mobile-menu" id="mobile-menu">
         <a href="{% url 'home' %}" class="mobile-link">Home</a>
         <a href="{% url 'features' %}" class="mobile-link">Features</a>
+        <a href="{% url 'mock_interviews' %}" class="mobile-link">Mock Interviews</a>
         <a href="{% url 'about' %}" class="mobile-link">About</a>
 
-        <div style="display: flex; flex-direction: column; gap: 10px;">
-
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
             {% if user.is_authenticated %}
+            <a href="{% url 'interview' %}" class="btn btn-primary btn-mobile mobile-link">Start Interview</a>
             <a href="{% url 'logout' %}" class="btn btn-ghost btn-mobile logout-link">Log Out</a>
             {% else %}
-            <a href="#login" class="btn btn-ghost btn-mobile">Log In</a>
-            <a href="#signup" class="btn btn-ghost btn-mobile">Sign Up</a>
+            <a href="{% url 'login' %}" class="btn btn-ghost btn-mobile mobile-link">Log In</a>
+            <a href="{% url 'signup' %}" class="btn btn-primary btn-mobile mobile-link">Sign Up</a>
             {% endif %}
         </div>
     </div>
@@ -113,10 +114,20 @@
             const mobileToggle = document.getElementById('mobile-toggle');
             const mobileMenu = document.getElementById('mobile-menu');
             const overlay = document.getElementById('overlay');
-            const mobileLinks = document.querySelectorAll('.mobile-link');
+            const currentLocation = window.location.pathname;
+            const navLinks = document.querySelectorAll('.nav-link, .mobile-link');
+
+            // 0. Active Link Highlighting
+            navLinks.forEach(link => {
+                const linkPath = new URL(link.getAttribute('href'), window.location.origin).pathname;
+                if (currentLocation === linkPath) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
 
             // 1. Scroll Effect
-            // Adds a shadow and solidifies background when scrolling down
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 20) {
                     navbar.classList.add('scrolled');
@@ -128,31 +139,35 @@
             // 2. Mobile Menu Toggle
             function toggleMenu() {
                 const isActive = mobileMenu.classList.contains('active');
-
                 if (isActive) {
-                    // Close Menu
-                    mobileMenu.classList.remove('active');
-                    overlay.classList.remove('active');
-                    mobileToggle.classList.remove('active');
-                    document.body.style.overflow = ''; // Re-enable scrolling
+                    closeMenu();
                 } else {
-                    // Open Menu
-                    mobileMenu.classList.add('active');
-                    overlay.classList.add('active');
-                    mobileToggle.classList.add('active');
-                    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                    openMenu();
                 }
             }
 
-            mobileToggle.addEventListener('click', toggleMenu);
-            overlay.addEventListener('click', toggleMenu);
+            function openMenu() {
+                mobileMenu.classList.add('active');
+                overlay.classList.add('active');
+                mobileToggle.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
 
-            // 3. Close menu when a link is clicked
-            mobileLinks.forEach(link => {
+            function closeMenu() {
+                mobileMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                mobileToggle.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            mobileToggle.addEventListener('click', toggleMenu);
+            overlay.addEventListener('click', closeMenu);
+
+            // 3. Close menu when any mobile link is clicked
+            const allMobileLinks = document.querySelectorAll('.mobile-link, .logout-link');
+            allMobileLinks.forEach(link => {
                 link.addEventListener('click', () => {
-                    if (mobileMenu.classList.contains('active')) {
-                        toggleMenu();
-                    }
+                    closeMenu();
                 });
             });
 
@@ -181,14 +196,11 @@
                 }
             });
 
-            // Close modal if clicking outside
             logoutModal.addEventListener('click', (e) => {
                 if (e.target === logoutModal) {
                     closeLogoutModal();
                 }
             });
-
-
 
             const logoutLinks = document.querySelectorAll('.logout-link');
             logoutLinks.forEach(link => {

@@ -236,7 +236,13 @@
             font-weight: 500;
             padding: 12px 0;
             border-bottom: 1px solid #f1f5f9;
+            transition: all 0.2s ease;
             display: block;
+        }
+
+        .mobile-menu a:hover, .mobile-menu a.active {
+            color: var(--primary-color);
+            padding-left: 8px;
         }
 
         .mobile-menu .btn-mobile {
