@@ -1,0 +1,227 @@
+{% extends 'base/navbar.html' %}
+{% load static %}
+
+{% block title %}Guides & Tips - AI Prep{% endblock %}
+
+{% block css %}
+<style>
+    .guides-container {
+        max-width: 1100px;
+        margin: 60px auto;
+        padding: 0 20px;
+    }
+
+    .guides-header {
+        margin-bottom: 50px;
+    }
+
+    .guides-header h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--text-dark);
+        margin-bottom: 12px;
+    }
+
+    .guides-header p {
+        color: var(--text-gray);
+        font-size: 1.1rem;
+    }
+
+    .guides-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 32px;
+    }
+
+    .guide-card {
+        background: white;
+        border-radius: 24px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .guide-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+        border-color: var(--primary-color);
+    }
+
+    .guide-image {
+        height: 200px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+
+    .guide-content {
+        padding: 30px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .guide-tag {
+        display: inline-block;
+        padding: 4px 12px;
+        background: rgba(99, 102, 241, 0.1);
+        color: var(--primary-color);
+        border-radius: 100px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        margin-bottom: 16px;
+    }
+
+    .guide-card h3 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: var(--text-dark);
+        line-height: 1.4;
+    }
+
+    .guide-card p {
+        color: var(--text-gray);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 24px;
+    }
+
+    .guide-footer {
+        margin-top: auto;
+        padding-top: 20px;
+        border-top: 1px solid #f1f5f9;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .read-more {
+        text-decoration: none;
+        color: var(--primary-color);
+        font-weight: 700;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .guide-time {
+        color: var(--text-gray);
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    @media (max-width: 768px) {
+        .guides-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="guides-container">
+    <div class="guides-header">
+        <h1>Interview Guides & Tips</h1>
+        <p>Expert advice to help you prepare, perform, and land your next role.</p>
+    </div>
+
+    <div class="guides-grid">
+        <!-- Guide 1 -->
+        <div class="guide-card">
+            <div class="guide-image">
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9" />
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                </svg>
+            </div>
+            <div class="guide-content">
+                <span class="guide-tag">Preparation</span>
+                <h3>How to Structure Technical Answers</h3>
+                <p>Master the STAR method and learn how to break down complex technical problems during high-pressure
+                    interviews.</p>
+                <div class="guide-footer">
+                    <a href="#" class="read-more">Read Guide <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                        </svg></a>
+                    <span class="guide-time"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg> 5 min read</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Guide 2 -->
+        <div class="guide-card">
+            <div class="guide-image">
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+            </div>
+            <div class="guide-content">
+                <span class="guide-tag">Communication</span>
+                <h3>Cracking the Behavioral Interview</h3>
+                <p>Learn how to showcase your soft skills, leadership potential, and cultural fit using real-world
+                    examples from your career.</p>
+                <div class="guide-footer">
+                    <a href="#" class="read-more">Read Guide <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                        </svg></a>
+                    <span class="guide-time"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg> 8 min read</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Guide 3 -->
+        <div class="guide-card">
+            <div class="guide-image">
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+                </svg>
+            </div>
+            <div class="guide-content">
+                <span class="guide-tag">AI Tips</span>
+                <h3>Getting the Most from AI Mock Sessions</h3>
+                <p>Advanced tips on how to interact with our AI interviewer to simulate various stress levels and
+                    difficulty settings.</p>
+                <div class="guide-footer">
+                    <a href="#" class="read-more">Read Guide <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                        </svg></a>
+                    <span class="guide-time"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg> 4 min read</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

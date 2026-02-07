@@ -1,0 +1,166 @@
+{% extends 'base/navbar.html' %}
+{% load static %}
+
+{% block title %}Privacy Policy - AI Prep{% endblock %}
+
+{% block css %}
+<style>
+    .policy-container {
+        max-width: 900px;
+        margin: 60px auto;
+        padding: 0 20px;
+        color: var(--text-dark);
+        line-height: 1.8;
+    }
+
+    .policy-header {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .policy-header h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 16px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .policy-header p {
+        color: var(--text-gray);
+        font-size: 1.1rem;
+    }
+
+    .policy-section {
+        margin-bottom: 40px;
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .policy-section h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .policy-section h2::before {
+        content: '';
+        width: 4px;
+        height: 24px;
+        background: var(--primary-color);
+        border-radius: 2px;
+    }
+
+    .policy-section p {
+        margin-bottom: 16px;
+        color: var(--text-gray);
+    }
+
+    .policy-list {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .policy-list li {
+        position: relative;
+        padding-left: 28px;
+        margin-bottom: 12px;
+        color: var(--text-gray);
+    }
+
+    .policy-list li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: var(--primary-color);
+        font-weight: 700;
+    }
+
+    .last-updated {
+        text-align: center;
+        color: var(--text-gray);
+        font-size: 0.9rem;
+        margin-top: 40px;
+    }
+
+    @media (max-width: 768px) {
+        .policy-section {
+            padding: 24px;
+        }
+
+        .policy-header h1 {
+            font-size: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="policy-container">
+    <div class="policy-header">
+        <h1>Privacy Policy</h1>
+        <p>Your privacy is our top priority at AI Prep.</p>
+    </div>
+
+    <div class="policy-section">
+        <h2>1. Information We Collect</h2>
+        <p>We collect information to provide better services to our users. This includes:</p>
+        <ul class="policy-list">
+            <li>Personal information (name, email) provided during signup.</li>
+            <li>Interview data, including audio recordings (if used) and text transcripts.</li>
+            <li>Usage data and performance metrics to improve our AI models.</li>
+            <li>Technical data like IP addresses and browser information.</li>
+        </ul>
+    </div>
+
+    <div class="policy-section">
+        <h2>2. How We Use Information</h2>
+        <p>We use the collected data for the following purposes:</p>
+        <ul class="policy-list">
+            <li>To provide personalized interview feedback and scoring.</li>
+            <li>To improve our AI algorithms and question sets.</li>
+            <li>To communicate with you about your account and updates.</li>
+            <li>To ensure the security and integrity of our platform.</li>
+        </ul>
+    </div>
+
+    <div class="policy-section">
+        <h2>3. Data Protection</h2>
+        <p>We implement a variety of security measures to maintain the safety of your personal information:</p>
+        <ul class="policy-list">
+            <li>End-to-end encryption for all sensitive data transmissions.</li>
+            <li>Regular security audits and vulnerability assessments.</li>
+            <li>Strict access controls for our internal data processing systems.</li>
+            <li>Anonymization of data used for training AI models.</li>
+        </ul>
+    </div>
+
+    <div class="policy-section">
+        <h2>4. Your Rights</h2>
+        <p>You have full control over your data on AI Prep:</p>
+        <ul class="policy-list">
+            <li>The right to access and download your interview history.</li>
+            <li>The right to correct or delete your personal information.</li>
+            <li>The right to opt-out of data usage for AI training purposes.</li>
+            <li>The right to terminate your account at any time.</li>
+        </ul>
+    </div>
+
+    <div class="policy-section">
+        <h2>5. Contact Us</h2>
+        <p>If you have any questions about this Privacy Policy, please contact our data protection team via our <a
+                href="{% url 'contact' %}"
+                style="color: var(--primary-color); text-decoration: none; font-weight: 600;">Contact Page</a>.</p>
+    </div>
+
+    <p class="last-updated">Last Updated: February 7, 2026</p>
+</div>
+{% endblock %}

@@ -123,6 +123,25 @@ def features(request):
 def mock_interviews(request):
     return render(request, 'mock_interviews.html')
 
+def contact(request):
+    if request.method == 'POST':
+        # Handing contact form submission (can be expanded later to send emails)
+        messages.success(request, 'Your message has been sent successfully!')
+        return redirect('contact')
+    return render(request, 'contact.html')
+
+def privacy_policy(request):
+    return render(request, 'privacy_policy.html')
+
+def terms_of_service(request):
+    return render(request, 'terms_of_service.html')
+
+def help_center(request):
+    return render(request, 'help_center.html')
+
+def guides(request):
+    return render(request, 'guides.html')
+
 @login_required
 def interview_chat(request):
     return render(request, 'interview_chat.html')

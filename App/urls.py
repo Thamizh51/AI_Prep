@@ -14,5 +14,10 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('features/', views.features, name='features'),
     path('mock-interviews/', views.mock_interviews, name='mock_interviews'),
+    path('contact/', views.contact, name='contact'),
+    path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
+    path('terms-of-service/', views.terms_of_service, name='terms_of_service'),
+    path('help-center/', views.help_center, name='help_center'),
+    path('guides/', views.guides, name='guides'),
     # End of URL patterns
 ]

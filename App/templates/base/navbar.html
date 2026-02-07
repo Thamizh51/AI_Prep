@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Prep - {% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'navbar.css' %}?v=2">
+    <link rel="stylesheet" href="{% static 'footer.css' %}?v=1">
     {% block css %}{% endblock %}
 </head>
 
@@ -35,6 +36,7 @@
                 <li><a href="{% url 'features' %}" class="nav-link">Features</a></li>
                 <li><a href="{% url 'mock_interviews' %}" class="nav-link">Mock Interviews</a></li>
                 <li><a href="{% url 'about' %}" class="nav-link">About</a></li>
+                <li><a href="{% url 'contact' %}" class="nav-link">Contact</a></li>
             </ul>
 
             <!-- Desktop Buttons -->
@@ -78,22 +80,23 @@
         <a href="{% url 'features' %}" class="mobile-link">Features</a>
         <a href="{% url 'mock_interviews' %}" class="mobile-link">Mock Interviews</a>
         <a href="{% url 'about' %}" class="mobile-link">About</a>
+        <a href="{% url 'contact' %}" class="mobile-link">Contact</a>
 
-        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
-            {% if user.is_authenticated %}
-            <a href="{% url 'interview' %}" class="btn btn-primary btn-mobile mobile-link">Start Interview</a>
-            <a href="{% url 'logout' %}" class="btn btn-ghost btn-mobile logout-link">Log Out</a>
-            {% else %}
-            <a href="{% url 'login' %}" class="btn btn-ghost btn-mobile mobile-link">Log In</a>
-            <a href="{% url 'signup' %}" class="btn btn-primary btn-mobile mobile-link">Sign Up</a>
-            {% endif %}
-        </div>
+        {% if user.is_authenticated %}
+        <a href="{% url 'interview' %}" class="mobile-link">Start Interview</a>
+        <a href="{% url 'logout' %}" class="mobile-link logout-link">Log Out</a>
+        {% else %}
+        <a href="{% url 'login' %}" class="mobile-link">Log In</a>
+        <a href="{% url 'signup' %}" class="mobile-link">Sign Up</a>
+        {% endif %}
     </div>
 
     <main class="page-content">
         {% block content %}
         {% endblock %}
     </main>
+
+    {% include 'base/footer.html' %}
 
 
     <!-- Logout Confirmation Modal -->

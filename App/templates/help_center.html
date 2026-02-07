@@ -1,0 +1,199 @@
+{% extends 'base/navbar.html' %}
+{% load static %}
+
+{% block title %}Help Center - AI Prep{% endblock %}
+
+{% block css %}
+<style>
+    .help-container {
+        max-width: 1000px;
+        margin: 60px auto;
+        padding: 0 20px;
+    }
+
+    .help-hero {
+        text-align: center;
+        margin-bottom: 60px;
+        padding: 40px;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05));
+        border-radius: 30px;
+        border: 1px solid var(--border-color);
+    }
+
+    .help-hero h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 16px;
+        color: var(--text-dark);
+    }
+
+    .help-hero p {
+        color: var(--text-gray);
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .faq-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+
+    .faq-card {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        border: 1px solid var(--border-color);
+        transition: all 0.3s ease;
+    }
+
+    .faq-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+        border-color: var(--primary-color);
+    }
+
+    .faq-card h3 {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 12px;
+        color: var(--text-dark);
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .faq-icon {
+        color: var(--primary-color);
+        flex-shrink: 0;
+        margin-top: 3px;
+    }
+
+    .faq-card p {
+        color: var(--text-gray);
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .contact-cta {
+        margin-top: 80px;
+        text-align: center;
+        padding: 40px;
+        background: white;
+        border-radius: 24px;
+        border: 1px dashed var(--primary-color);
+    }
+
+    .contact-cta h2 {
+        margin-bottom: 12px;
+    }
+
+    .btn-help {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 24px;
+        background: var(--primary-color);
+        color: white;
+        text-decoration: none;
+        border-radius: 10px;
+        font-weight: 600;
+        margin-top: 20px;
+        transition: all 0.2s ease;
+    }
+
+    .btn-help:hover {
+        background: var(--primary-hover);
+        transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+        .faq-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .help-hero h1 {
+            font-size: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="help-container">
+    <div class="help-hero">
+        <h1>How can we help?</h1>
+        <p>Everything you need to know about preparing with AI Prep.</p>
+    </div>
+
+    <div class="faq-grid">
+        <div class="faq-card">
+            <h3>
+                <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+                What is AI Prep?
+            </h3>
+            <p>AI Prep is an advanced interview preparation platform that uses AI to conduct realistic mock interviews
+                across hundreds of tech roles. We provide instant feedback, scoring, and actionable insights to help you
+                improve.</p>
+        </div>
+
+        <div class="faq-card">
+            <h3>
+                <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+                Is my data secure?
+            </h3>
+            <p>Yes, security is our top priority. All interview transcripts and audio recordings (if used) are
+                encrypted. We never share your personal data or interview performance with employers without your
+                explicit consent.</p>
+        </div>
+
+        <div class="faq-card">
+            <h3>
+                <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
+                How does the AI provide feedback?
+            </h3>
+            <p>Our AI analyzes your answers for technical accuracy, communication clarity, confidence, and keyword
+                usage. It then compares your responses against industry standards and provides specific suggestions for
+                improvement.</p>
+        </div>
+
+        <div class="faq-card">
+            <h3>
+                <svg class="faq-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect width="20" height="14" x="2" y="5" rx="2" />
+                    <line x1="2" y1="10" x2="22" y2="10" />
+                </svg>
+                Do you have a free tier?
+            </h3>
+            <p>Yes! You can start practicing for free. We offer a selection of basic mock interviews and feedback
+                summaries to help everyone get started on their career journey.</p>
+        </div>
+    </div>
+
+    <div class="contact-cta">
+        <h2>Still have questions?</h2>
+        <p>Our support team is always ready to assist you with any inquiries or technical issues.</p>
+        <a href="{% url 'contact' %}" class="btn-help">
+            Contact Support
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+            </svg>
+        </a>
+    </div>
+</div>
+{% endblock %}

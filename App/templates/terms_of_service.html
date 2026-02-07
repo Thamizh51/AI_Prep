@@ -1,0 +1,162 @@
+{% extends 'base/navbar.html' %}
+{% load static %}
+
+{% block title %}Terms of Service - AI Prep{% endblock %}
+
+{% block css %}
+<style>
+    .terms-container {
+        max-width: 900px;
+        margin: 60px auto;
+        padding: 0 20px;
+        color: var(--text-dark);
+        line-height: 1.8;
+    }
+
+    .terms-header {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .terms-header h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 16px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .terms-header p {
+        color: var(--text-gray);
+        font-size: 1.1rem;
+    }
+
+    .terms-section {
+        margin-bottom: 40px;
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .terms-section h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .terms-section h2::before {
+        content: '';
+        width: 4px;
+        height: 24px;
+        background: var(--secondary-color);
+        border-radius: 2px;
+    }
+
+    .terms-section p {
+        margin-bottom: 16px;
+        color: var(--text-gray);
+    }
+
+    .terms-list {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .terms-list li {
+        position: relative;
+        padding-left: 28px;
+        margin-bottom: 12px;
+        color: var(--text-gray);
+    }
+
+    .terms-list li::before {
+        content: '•';
+        position: absolute;
+        left: 0;
+        color: var(--secondary-color);
+        font-size: 1.5rem;
+        line-height: 1;
+        top: 2px;
+    }
+
+    .last-updated {
+        text-align: center;
+        color: var(--text-gray);
+        font-size: 0.9rem;
+        margin-top: 40px;
+    }
+
+    @media (max-width: 768px) {
+        .terms-section {
+            padding: 24px;
+        }
+
+        .terms-header h1 {
+            font-size: 2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="terms-container">
+    <div class="terms-header">
+        <h1>Terms of Service</h1>
+        <p>Please read these terms carefully before using AI Prep.</p>
+    </div>
+
+    <div class="terms-section">
+        <h2>1. Acceptance of Terms</h2>
+        <p>By accessing or using AI Prep, you agree to be bound by these Terms of Service and all applicable laws and
+            regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this
+            site.</p>
+    </div>
+
+    <div class="terms-section">
+        <h2>2. Use License</h2>
+        <p>Permission is granted to temporarily use AI Prep for personal, non-commercial interview practice. This is the
+            grant of a license, not a transfer of title, and under this license you may not:</p>
+        <ul class="terms-list">
+            <li>Modify or copy the materials.</li>
+            <li>Use the materials for any commercial purpose.</li>
+            <li>Attempt to decompile or reverse engineer any software contained on AI Prep.</li>
+            <li>Remove any copyright or other proprietary notations from the materials.</li>
+        </ul>
+    </div>
+
+    <div class="terms-section">
+        <h2>3. AI Content Disclaimer</h2>
+        <p>AI Prep uses advanced AI models to provide feedback. You acknowledge that:</p>
+        <ul class="terms-list">
+            <li>AI-generated feedback is for practice purposes and does not guarantee job placement.</li>
+            <li>The AI may occasionally provide inaccurate or biased information.</li>
+            <li>You should use your own judgment when applying feedback to real-world scenarios.</li>
+        </ul>
+    </div>
+
+    <div class="terms-section">
+        <h2>4. User Accounts</h2>
+        <p>To use certain features, you must create an account. You are responsible for:</p>
+        <ul class="terms-list">
+            <li>Maintaining the confidentiality of your account credentials.</li>
+            <li>All activities that occur under your account.</li>
+            <li>Providing accurate and complete information during registration.</li>
+        </ul>
+    </div>
+
+    <div class="terms-section">
+        <h2>5. Termination</h2>
+        <p>We may terminate or suspend your account immediately, without prior notice or liability, for any reason
+            whatsoever, including without limitation if you breach the Terms.</p>
+    </div>
+
+    <p class="last-updated">Last Updated: February 7, 2026</p>
+</div>
+{% endblock %}
