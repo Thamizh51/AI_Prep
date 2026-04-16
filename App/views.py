@@ -50,59 +50,58 @@ def index(request):
         return render(request, 'home.html', context)
     return render(request, 'home.html')
 
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+
 def login_view(request):
     if request.method == 'POST':
-        email = request.POST.get('email')
+        email = request.POST.get('email').strip().lower()
         password = request.POST.get('password')
-        
-        values = {'email': email}
-        
-        # Try to find user by email first to support email-based login
+
         try:
-            user_obj = User.objects.get(email=email)
-            user = authenticate(request, username=user_obj.username, password=password)
+            user_obj = User.objects.get(email__iexact=email)
+            user = authenticate(
+                request,
+                username=user_obj.username,
+                password=password
+            )
         except User.DoesNotExist:
             user = None
-        
-        if user is not None:
+
+        if user:
             login(request, user)
             return redirect('home')
-        else:
-            errors = {'password': 'Invalid email or password'}
-            return render(request, 'login.html', {'values': values, 'errors': errors})
-            
+
+        return render(request, 'login.html', {
+            'error': 'Invalid email or password'
+        })
+
     return render(request, 'login.html')
 
+
 def signup(request):
-
     if request.method == 'POST':
-        name = request.POST.get('fullname')
-        email = request.POST.get('email')
+        username = request.POST.get('fullname')
+        email = request.POST.get('email').strip().lower()
         password = request.POST.get('password')
-        confirm_password = request.POST.get('confirm-password')
-        
-        values = {
-            'fullname': name,
-            'email': email
-        }
 
+        # Check if user already exists
         if User.objects.filter(email=email).exists():
-            errors = {'email': 'Email already exists'}
-            return render(request, 'signup.html', {'values': values, 'errors': errors})
-            
-        if password != confirm_password:
-            errors = {'password': 'Passwords do not match'}
-            return render(request, 'signup.html', {'values': values, 'errors': errors})
-        
-        try:
-            user = User.objects.create_user(username=name, email=email, password=password)
-            user.save()
-            messages.success(request, 'Account created successfully')
-            return redirect('login')
-        except Exception as e:
-            messages.error(request, f'Error creating account: {e}')
-            return render(request, 'signup.html', {'values': values})
-            
+            return render(request, 'signup.html', {
+                'error': 'Email already exists'
+            })
+
+        # Create user with hashed password
+        user = User.objects.create(
+            username=username,
+            email=email
+        )
+        user.set_password(password)   # 🔥 IMPORTANT (hashing)
+        user.save()
+
+        return redirect('login')
+
     return render(request, 'signup.html')
 
 def logout_view(request):
