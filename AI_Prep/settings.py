@@ -80,19 +80,12 @@ WSGI_APPLICATION = 'AI_Prep.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'thamizh@098',
-        'HOST': 'db.jifbvlxrdcyhppstmdkf.supabase.co',
-        'PORT': '5432',
-        'OPTIONS': {
-            'sslmode': 'require',
-            'target_session_attrs': 'read-write'
-        },
-    }
+    "default": dj_database_url.parse(
+        "postgresql://postgres.jifbvlxrdcyhppstmdkf:thamizh%40098@aws-1-ap-south-1.pooler.supabase.com:6543/postgres?sslmode=require"
+    )
 }
 
 
