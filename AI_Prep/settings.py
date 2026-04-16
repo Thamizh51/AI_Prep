@@ -88,6 +88,10 @@ DATABASES = {
         'PASSWORD': 'thamizh@098',
         'HOST': 'db.jifbvlxrdcyhppstmdkf.supabase.co',
         'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require',
+            'target_session_attrs': 'read-write'
+        },
     }
 }
 
